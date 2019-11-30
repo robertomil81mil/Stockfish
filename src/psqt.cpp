@@ -37,7 +37,16 @@ namespace PSQT {
 // second half of the files.
 constexpr Score Bonus[][RANK_NB][int(FILE_NB) / 2] = {
   { },
-  { },
+  { // Pawn
+   { S(  0,  0), S(  0,  0), S(  0,  0), S(  0,  0) },
+   { S( -2,-29), S( 10,-11), S( 29, 17), S( 35, 14) },
+   { S(-31,-14), S(-10,-16), S( 33, -7), S( 47,  8) },
+   { S(-20, -3), S(-19,-12), S( 23,-20), S( 60,-17) },
+   { S( 18, 17), S(-13, 17), S(-15, -3), S( 12,-24) },
+   { S(-23, 41), S(-27, 26), S(-12, 28), S( 14, 58) },
+   { S(-15,  7), S( 17, -7), S(-19, 31), S( -8, 46) },
+   { S(  0,  0), S(  0,  0), S(  0,  0), S(  0,  0) }
+  },
   { // Knight
    { S(-175, -96), S(-92,-65), S(-74,-49), S(-73,-21) },
    { S( -77, -67), S(-41,-54), S(-27,-18), S(-15,  8) },
@@ -90,17 +99,6 @@ constexpr Score Bonus[][RANK_NB][int(FILE_NB) / 2] = {
   }
 };
 
-constexpr Score PBonus[RANK_NB][FILE_NB] =
-  { // Pawn (asymmetric distribution)
-   { },
-   { S(  3,-10), S(  3, -6), S( 10, 10), S( 19,  0), S( 16, 14), S( 19,  7), S(  7, -5), S( -5,-19) },
-   { S( -9,-10), S(-15,-10), S( 11,-10), S( 15,  4), S( 32,  4), S( 22,  3), S(  5, -6), S(-22, -4) },
-   { S( -8,  6), S(-23, -2), S(  6, -8), S( 20, -4), S( 40,-13), S( 17,-12), S(  4,-10), S(-12, -9) },
-   { S( 13,  9), S(  0,  4), S(-13,  3), S(  1,-12), S( 11,-12), S( -2, -6), S(-13, 13), S(  5,  8) },
-   { S( -5, 28), S(-12, 20), S( -7, 21), S( 22, 28), S( -8, 30), S( -5,  7), S(-15,  6), S(-18, 13) },
-   { S( -7,  0), S(  7,-11), S( -3, 12), S(-13, 21), S(  5, 25), S(-16, 19), S( 10,  4), S( -8,  7) }
-  };
-
 #undef S
 
 Score psq[PIECE_NB][SQUARE_NB];
@@ -120,8 +118,8 @@ void init() {
       for (Square s = SQ_A1; s <= SQ_H8; ++s)
       {
           File f = map_to_queenside(file_of(s));
-          psq[ pc][ s] = score + (type_of(pc) == PAWN ? PBonus[rank_of(s)][file_of(s)]
-                                                      : Bonus[pc][rank_of(s)][f]);
+          psq[ pc][ s] = score + Bonus[pc][rank_of(s)][f]);
+                                                      : 
           psq[~pc][~s] = -psq[pc][s];
       }
   }
